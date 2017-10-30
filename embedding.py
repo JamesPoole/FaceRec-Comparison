@@ -14,7 +14,7 @@ class Embedding(object):
 
 class FN_Embedding(Embedding):
 
-    def __init__(self, dataset, mdlpath, imgsize, batchsize):
+    def __init__(self, dataset, mdlpath, imgsize, batchsize=200):
         super().__init__(dataset)
         self.mdlpath = mdlpath
         self.imgsize = imgsize
