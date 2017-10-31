@@ -2,7 +2,7 @@ import sys
 import argparse
 
 import embedding
-import data_split
+import data_parse
 
 def get_face_vectors(embed_type, dataset, modelpath, imgsize):
     if embed_type == "hog":
@@ -13,9 +13,20 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize):
         print("You have provided an invalid embedding type. (Valid options are facenet or hog)")
         return False
 
+    data, labels = embed_method.get_embeddings()
+
+    return data, labels
+
 def main(args):
-    train_set, test_set = data_split.get_train_test_set(args.dataset)
-    get_face_vectors(args.embedding, args.dataset, args.mdlpath, args.imgsize)
+    train_set, test_set = data_parse.get_train_test_set(args.dataset)
+
+    #Prepare Training Data
+    train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize)
+    int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
+
+    #Prepare Test Data
+    test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize)
+    int_test_labels, int_label_lookup_dict = data_parse.labels_to_int(test_labels)
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
