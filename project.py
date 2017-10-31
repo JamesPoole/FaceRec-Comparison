@@ -2,6 +2,7 @@ import sys
 import argparse
 
 import embedding
+import data_split
 
 def get_face_vectors(embed_type, dataset, modelpath, imgsize):
     if embed_type == "hog":
@@ -13,6 +14,7 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize):
         return False
 
 def main(args):
+    train_set, test_set = data_split.get_train_test_set(args.dataset)
     get_face_vectors(args.embedding, args.dataset, args.mdlpath, args.imgsize)
 
 def parse_arguments(argv):
