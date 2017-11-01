@@ -28,7 +28,8 @@ This is still a work in progress.
 ## Prerequisites
 This requires Python 3.X
 
-A working Tensorflow environment is required. Install instructions can be found [here](https://www.tensorflow.org/install/install_linux)
+A working Tensorflow environment is required. Install instructions can be found [here](https://www.tensorflow.org/install/install_linux).
+
 Python requirements can be found and installed from requirements.txt
 `pip3 install -r requirements.txt`
 
