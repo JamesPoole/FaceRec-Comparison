@@ -5,7 +5,7 @@ import embedding
 import classifier
 import data_parse
 
-def get_face_vectors(embed_type, dataset, modelpath, imgsize):
+def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
     """
     get_face_vectors - function to provide facial embeddings for a dataset
 
@@ -20,7 +20,7 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize):
     if embed_type == "hog":
         embed_method = embedding.HOG_Embedding(dataset)
     elif embed_type == "facenet":
-        embed_method = embedding.FN_Embedding(dataset, modelpath, imgsize)
+        embed_method = embedding.FN_Embedding(dataset, modelpath, imgsize, gpu_mem)
     else:
         print("You have provided an invalid embedding type. (Valid options are facenet or hog)")
         return False
@@ -49,7 +49,7 @@ def main(args):
     print("Parsing dataset...")
 
     #Prepare Training Data
-    train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize)
+    train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
     int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
     print("Training data parsed.")
 
@@ -67,6 +67,7 @@ def parse_arguments(argv):
     parser.add_argument("--dataset", help="Full path to dataset dir", type=str, required=True)
     parser.add_argument("--mdlpath", help="Full path to tensorflow model to use", type=str, required=False)
     parser.add_argument("--imgsize", help="Size of images to use", type=int, default=160, required=False)
+    parser.add_argument("--gpu_memory_fraction", help="tensorflow gpu memory usage", type=float, required=False)
 
     args = parser.parse_args()   
     return parser.parse_args(argv)

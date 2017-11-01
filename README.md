@@ -53,5 +53,6 @@ Run the project by executing `python3 project.py` with the following arguments:
 - `--classifier`    Select a valid classifier implementation. (Currently only working argument is "svm")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
 - `--mdlpath`       Provide full path to the tensorflow facenet model (.pb file)
+- `--gpu_memory_fraction`   Upper bound on the amount of GPU memory that will be used by the process
 
 

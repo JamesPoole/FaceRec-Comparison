@@ -15,10 +15,11 @@ class Embedding(object):
 
 class FN_Embedding(Embedding):
 
-    def __init__(self, dataset, mdlpath, imgsize, batchsize=50):
+    def __init__(self, dataset, mdlpath, imgsize, gpu_mem, batchsize=50):
         super().__init__(dataset)
         self.mdlpath = mdlpath
         self.imgsize = imgsize
+        self.gpu_mem = gpu_mem
         self.batchsize = batchsize
 
     def get_embeddings(self):
@@ -33,7 +34,8 @@ class FN_Embedding(Embedding):
         results = dict()
 
         with tf.Graph().as_default():
-            with tf.Session() as sess:
+            gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=self.gpu_mem)
+            with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
                 facenet.load_model(self.mdlpath)
 
                 # Get input and output tensors
