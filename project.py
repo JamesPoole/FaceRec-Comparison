@@ -54,7 +54,7 @@ def main(args):
     print("Training data parsed.")
 
     #Prepare Test Data
-    test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize)
+    test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
     int_test_labels = data_parse.int_label_lookup(test_labels, int_label_lookup_dict)
     print("Test data parsed.")
 

@@ -50,18 +50,23 @@ class FN_Embedding(Embedding):
                 labels = []
 
                 for cls in self.dataset:
-                    batch_num += 1
-                    print("batch num: %d of %d" % (batch_num, len(self.dataset)))
+                    for path in cls.image_paths:
+                        image_paths.append(path)
+                        labels.append(cls.name)
+
+                for i in range(0, len(image_paths), self.batchsize):
+                    print("batch num: %d of %d" % (i / self.batchsize, len(image_paths) / self.batchsize))
 
                     #load data
-                    images = facenet.load_data(cls.image_paths, do_random_crop=False, do_random_flip=False, image_size=self.imgsize, do_prewhiten=True)
-                    image_paths.append(cls.image_paths)
+                    images = facenet.load_data(image_paths=image_paths[i:i+self.batchsize], do_random_crop=False, do_random_flip=False, image_size=self.imgsize, do_prewhiten=True)
                     feed_dict = {images_placeholder: images, phase_train_placeholder: False}
 
                     emb_array = sess.run(embeddings, feed_dict=feed_dict)
                     data.append(emb_array)
-                    for i in range(0, len(cls.image_paths)):
-                        labels.append(cls.name)
+
+                #convert list to numpy array for compatibility with the svm
+                data = np.asarray(data)
+                labels = np.asarray(labels)
 
                 return data, labels
 
