@@ -60,6 +60,8 @@ def main(args):
 
     result = classify(args.classifier, train_data, int_train_labels, test_data, int_test_labels)
 
+    print(result)
+
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument("--embedding", help="Select method of getting facial embeddings (facenet or hog)", type=str, required=True)

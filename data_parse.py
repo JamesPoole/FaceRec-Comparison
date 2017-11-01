@@ -86,18 +86,3 @@ def int_label_lookup(test_labels, int_label_dict):
         int_labels.append(int_label_dict[name])  
 
     return int_labels
-
-"""
-data_reshape - function to reshape the data to work with libsvm
-
-args    data - dataset to reshape
-
-return reshaped data - reshaped dataset
-"""
-def data_reshape(data):
-    data_size = len(data)
-    reshaped_data = data.reshape(data_size, -1)
-
-    return reshaped_data
-
-

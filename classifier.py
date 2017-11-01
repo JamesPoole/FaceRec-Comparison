@@ -95,7 +95,6 @@ class SVM_Classifier(Classifier):
         """
         data_size = len(data)
         reshaped_data = data.reshape(data_size, -1)
-
         return reshaped_data
 
 class Neural_Classifier(Classifier):

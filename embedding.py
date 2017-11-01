@@ -62,7 +62,8 @@ class FN_Embedding(Embedding):
                     feed_dict = {images_placeholder: images, phase_train_placeholder: False}
 
                     emb_array = sess.run(embeddings, feed_dict=feed_dict)
-                    data.append(emb_array)
+                    for emb in emb_array:
+                        data.append(emb)
 
                 #convert list to numpy array for compatibility with the svm
                 data = np.asarray(data)
