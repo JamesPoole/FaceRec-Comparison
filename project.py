@@ -6,6 +6,17 @@ import classifier
 import data_parse
 
 def get_face_vectors(embed_type, dataset, modelpath, imgsize):
+    """
+    get_face_vectors - function to provide facial embeddings for a dataset
+
+    args    embed_type - type of embedding to find (hog or facenet)
+            dataset - full path to dataset
+            modelpath - full path to tensorflow facenet model (for embed_type facenet only)
+            imgsize - size of image to use for facenet (for embed_type facenet only)
+
+    returns data - array of facial vectors
+            labels - array of labels that corresponds to the array of facial vectors
+    """
     if embed_type == "hog":
         embed_method = embedding.HOG_Embedding(dataset)
     elif embed_type == "facenet":
@@ -48,10 +59,6 @@ def main(args):
     print("Test data parsed.")
 
     result = classify(args.classifier, train_data, int_train_labels, test_data, int_test_labels)
-
-
-
-
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()

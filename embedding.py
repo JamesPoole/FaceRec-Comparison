@@ -15,17 +15,53 @@ class Embedding(object):
 
 class FN_Embedding(Embedding):
 
-    def __init__(self, dataset, mdlpath, imgsize, batchsize=200):
+    def __init__(self, dataset, mdlpath, imgsize, batchsize=50):
         super().__init__(dataset)
         self.mdlpath = mdlpath
         self.imgsize = imgsize
         self.batchsize = batchsize
 
     def get_embeddings(self):
-        with tf.Graph.as_default():
-            with tf.Session() as sess:
-                facenet.load_model(mdlpath)
+        """
+        get_embeddings - function to get embeddings of a dataset using FaceNet
 
+        args    self
+
+        returns data - array of embeddings for each image
+                labels - array of corresponding labels for each embedding
+        """
+        results = dict()
+
+        with tf.Graph().as_default():
+            with tf.Session() as sess:
+                facenet.load_model(self.mdlpath)
+
+                # Get input and output tensors
+                images_placeholder = tf.get_default_graph().get_tensor_by_name("input:0")
+                embeddings = tf.get_default_graph().get_tensor_by_name("embeddings:0")
+                phase_train_placeholder = tf.get_default_graph().get_tensor_by_name("phase_train:0")
+
+                image_paths = []
+                batch_num = 0
+
+                data = []
+                labels = []
+
+                for cls in self.dataset:
+                    batch_num += 1
+                    print("batch num: %d of %d" % (batch_num, len(self.dataset)))
+
+                    #load data
+                    images = facenet.load_data(cls.image_paths, do_random_crop=False, do_random_flip=False, image_size=self.imgsize, do_prewhiten=True)
+                    image_paths.append(cls.image_paths)
+                    feed_dict = {images_placeholder: images, phase_train_placeholder: False}
+
+                    emb_array = sess.run(embeddings, feed_dict=feed_dict)
+                    data.append(emb_array)
+                    for i in range(0, len(cls.image_paths)):
+                        labels.append(cls.name)
+
+                return data, labels
 
 class HOG_Embedding(Embedding):
 
@@ -33,6 +69,15 @@ class HOG_Embedding(Embedding):
         super().__init__(dataset)
 
     def get_embeddings(self):
+        """
+        get_embeddings - function to get embeddings (in form of HOG) of a dataset using OpenCV
+
+        args    self
+
+        returns data - array of embeddings for each image
+                labels - array of corresponding labels for each embedding
+        """
+
         #values and setup for the HOG Descriptor
         win_size = (250, 250)
         block_size = (10, 10)
