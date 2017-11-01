@@ -2,6 +2,7 @@ import sys
 import argparse
 
 import embedding
+import classifier
 import data_parse
 
 def get_face_vectors(embed_type, dataset, modelpath, imgsize):
@@ -17,16 +18,40 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize):
 
     return data, labels
 
+def classify(classify_type, train_data, train_labels, test_data, test_labels):
+    if classify_type == "svm":
+        classify_method = classifier.SVM_Classifier(train_data, train_labels, test_data, test_labels)
+    elif classify_type == "neural":
+        classify_method = classifier.Neural_Classifier()
+    else:
+        print("You have provided and invalid classifier type. (Valid options are svm or neural)")
+        return False
+
+    model = classify_method.train()
+    response = classify_method.test(model)
+    accuracy = classify_method.check_accuracy(response)
+
+    return accuracy
+
 def main(args):
     train_set, test_set = data_parse.get_train_test_set(args.dataset)
+    print("Parsing dataset...")
 
     #Prepare Training Data
     train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize)
     int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
+    print("Training data parsed.")
 
     #Prepare Test Data
     test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize)
-    int_test_labels, int_label_lookup_dict = data_parse.labels_to_int(test_labels)
+    int_test_labels = data_parse.int_label_lookup(test_labels, int_label_lookup_dict)
+    print("Test data parsed.")
+
+    result = classify(args.classifier, train_data, int_train_labels, test_data, int_test_labels)
+
+
+
+
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
