@@ -1,4 +1,4 @@
-#My Final Year Project - A Comparison of Facial Recognition Implementations
+# My Final Year Project - A Comparison of Facial Recognition Implementations
 
 This is a refactor of my existing work to encapsulate everything into one modular project.
 The goal of this project is compare deep learning techniques against more traditional approaches
@@ -14,24 +14,37 @@ run and measure the performance.
 
 This is still a work in progress.
 
-##Implemented Features
+## Implemented Features
 1) Dataset Parsing
 2) Obtaining HOG Feature Vectors
 3) SVM
 
-##Features still to be Implemented
+## Features still to be Implemented
 1) Obtaining FaceNet Embeddings
 2) Neural Classifier
 3) Dataset Facial Alignment
 4) Improved Performance Measuring
 
-##Prerequisites
+## Prerequisites
 This requires Python 3.X
 
 Python requirements can be found and installed from requirements.txt
-Tested using the ([LFW Dataset](http://vis-www.cs.umass.edu/lfw/)). You can download this ([here](http://vis-www.cs.umass.edu/lfw/lfw.tgz)).
+`pip3 install -r requirements.txt`
 
-###Parameters
+Tested using the [LFW Dataset](http://vis-www.cs.umass.edu/lfw/). You can download this [here](http://vis-www.cs.umass.edu/lfw/lfw.tgz).
+
+You will require the FaceNet code for the FaceNet embedding part of this project.
+You can download this by executing:
+`git clone https://github.com/davidsandberg/facenet`
+Following that you will need to add it to your python path.
+`export PYTHONPATH=[...]/facenet/src`
+(Ensure to adjust to the path where you have downloaded FaceNet to.)
+You can add this line to the bottom of your ~/.bashrc file to ensure that it is run every time you open a terminal.
+
+### Parameters
+
+Run the project by executing `python3 project.py` with the following arguments:
+
 - `--embedding`     Select a valid embedding implementation. (Currently only working argument is "hog")
 - `--classifier`    Select a valid classifier implementation. (Currently only working argument is "svm")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
