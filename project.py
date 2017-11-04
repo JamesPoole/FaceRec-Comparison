@@ -1,6 +1,8 @@
 import sys
 import argparse
 
+import facenet
+
 import embedding
 import classifier
 import data_parse
@@ -40,12 +42,13 @@ def classify(classify_type, train_data, train_labels, test_data, test_labels):
 
     model = classify_method.train()
     response = classify_method.test(model)
-    accuracy = classify_method.check_accuracy(response)
+    accuracy = classify_method.check_accuracy(model, response)
 
     return accuracy
 
 def main(args):
-    train_set, test_set = data_parse.get_train_test_set(args.dataset)
+    dataset_tmp = facenet.get_dataset(args.dataset)
+    train_set, test_set = data_parse.split_dataset(dataset_tmp, 20, 4)
     print("Parsing dataset...")
 
     #Prepare Training Data
