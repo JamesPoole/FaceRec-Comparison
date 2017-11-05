@@ -55,4 +55,15 @@ Run the project by executing `python3 project.py` with the following arguments:
 - `--mdlpath`       Provide full path to the tensorflow facenet model (.pb file)
 - `--gpu_memory_fraction`   Upper bound on the amount of GPU memory that will be used by the process
 
+### Example
 
+`python project.py --embedding facenet --classifier svm --dataset /home/james/Dropbox/ml/datasets/lfw/ --mdlpath /home/james/Dropbox/ml/models/20170514-110547/20170512-110547.pb
+
+## Results To Date
+
+5 Nov 2017
+
+|           | SVM     | Neural Net  |
+|-----------|---------|-------------|
+| Facenet    | 99.6%-30secs | - |
+| HOG        | 30.4%-Overnight | - |

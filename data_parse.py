@@ -22,7 +22,7 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
             test_set.append(facenet.ImageClass(cls.name, paths[:nrof_test_images_per_class]))
             train_set.append(facenet.ImageClass(cls.name, paths[nrof_test_images_per_class:]))
 
-    print('Classes: %d' % len(dataset))
+    print('Classes: %d' % (len(test_set)))
 
     return train_set, test_set
 

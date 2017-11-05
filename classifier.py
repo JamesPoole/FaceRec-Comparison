@@ -37,6 +37,7 @@ class SVM_Classifier(Classifier):
         
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)
+        print(self.test_labels)
 
         #train svm
         print("Starting to train svm...")
