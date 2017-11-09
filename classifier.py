@@ -1,6 +1,13 @@
 from sklearn import svm as sk_svm
 import numpy as np
 
+import tensorflow as tf
+import keras
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Activation, Dropout, Flatten, Dense
+from keras import backend as K
+
 class Classifier(object):
 
     def __init__(self, train_data, train_labels, test_data, test_labels):
@@ -37,7 +44,6 @@ class SVM_Classifier(Classifier):
         
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)
-        print(self.test_labels)
 
         #train svm
         print("Starting to train svm...")
@@ -107,18 +113,35 @@ class SVM_Classifier(Classifier):
         """
         data_size = len(data)
         reshaped_data = data.reshape(data_size, -1)
+        print("DATA SHAPE")
+        print(reshaped_data.shape)
         return reshaped_data
 
 class Neural_Classifier(Classifier):
     
-    def __init__(self):
-        pass
+    def __init__(self, train_data, train_labels, test_data, test_labels):
+        super().__init__(train_data, train_labels, test_data, test_labels)
 
     def train(self):
-        pass
+         epochs = 25
+         batch_size = 25
+         input_shape = self.train_data.shape
+         print(input_shape)
+
+         model = Sequential()
+         model.add(Dense(units=20, input_dim=128, activation='sigmoid'))
+
+         model.compile(loss='categorical_crossentropy',
+                    optimizer='sgd',
+                    metrics=['accuracy'])
+
+         model.fit(self.train_data, self.train_labels, epochs=epochs, batch_size=batch_size)
+
+         return model
 
     def test(self):
-        pass
+        return 0
 
-    def check_accuracy(self):
-        pass
+    def check_accuracy(self, model):
+        loss_and_metrics = model.evaluate(self.test_data, self.test_labels, batch_size = batch_size)
+        return loss_and_metrics

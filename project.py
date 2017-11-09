@@ -35,7 +35,7 @@ def classify(classify_type, train_data, train_labels, test_data, test_labels):
     if classify_type == "svm":
         classify_method = classifier.SVM_Classifier(train_data, train_labels, test_data, test_labels)
     elif classify_type == "neural":
-        classify_method = classifier.Neural_Classifier()
+        classify_method = classifier.Neural_Classifier(train_data, train_labels, test_data, test_labels)
     else:
         print("You have provided and invalid classifier type. (Valid options are svm or neural)")
         return False
@@ -48,7 +48,7 @@ def classify(classify_type, train_data, train_labels, test_data, test_labels):
 
 def main(args):
     dataset_tmp = facenet.get_dataset(args.dataset)
-    train_set, test_set = data_parse.split_dataset(dataset_tmp, 20, 4)
+    train_set, test_set = data_parse.split_dataset(dataset_tmp, args.min_nrof_images_per_class, args.num_test_images_per_class)
     print("Parsing dataset...")
 
     #Prepare Training Data
@@ -70,10 +70,11 @@ def parse_arguments(argv):
     parser.add_argument("--embedding", help="Select method of getting facial embeddings (facenet or hog)", type=str, required=True)
     parser.add_argument("--classifier", help="Select method of classifying images (neural or svm)", type=str, required=True)
     parser.add_argument("--dataset", help="Full path to dataset dir", type=str, required=True)
+    parser.add_argument("--min_nrof_images_per_class", help="minimum images needed for a class to be included", type=int, required=True)
+    parser.add_argument("--num_test_images_per_class", help="number of test images per class", type=int, required=True)
     parser.add_argument("--mdlpath", help="Full path to tensorflow model to use", type=str, required=False)
     parser.add_argument("--imgsize", help="Size of images to use", type=int, default=160, required=False)
     parser.add_argument("--gpu_memory_fraction", help="tensorflow gpu memory usage", type=float, required=False)
-
     args = parser.parse_args()   
     return parser.parse_args(argv)
 

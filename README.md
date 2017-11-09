@@ -52,12 +52,14 @@ Run the project by executing `python3 project.py` with the following arguments:
 - `--embedding`     Select a valid embedding implementation. (Valid options are "facenet" and "hog")
 - `--classifier`    Select a valid classifier implementation. (Currently only working argument is "svm")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
+- `--min_nrof_images_per_class` Provide minimum number of images required for a class to be included
+- `--num_test_images_per_class` Provide the number of test images required per class
 - `--mdlpath`       Provide full path to the tensorflow facenet model (.pb file)
 - `--gpu_memory_fraction`   Upper bound on the amount of GPU memory that will be used by the process
 
 ### Example
 
-`python project.py --embedding facenet --classifier svm --dataset /home/james/Dropbox/ml/datasets/lfw/ --mdlpath /home/james/Dropbox/ml/models/20170514-110547/20170512-110547.pb
+`python project.py --embedding facenet --classifier svm --dataset /home/james/Dropbox/ml/datasets/lfw/ --mdlpath /home/james/Dropbox/ml/models/20170514-110547/20170512-110547.pb`
 
 ## Results To Date
 
