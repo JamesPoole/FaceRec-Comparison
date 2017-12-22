@@ -1,17 +1,18 @@
 import facenet
 import numpy as np
 
-"""
-split_dataset - function to split the dataset into a train set and a test set
-
-args    dataset - dataset to be split
-        min_nrof_images_per_class - minimum num of images required for a class to be used
-        nrof_train_images_per_class - num of images used for training within a class
-
-returns train_set - dataset for training
-        test_set - dataset for testing
-"""
 def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class):
+    """
+    split_dataset - function to split the dataset into a train set and a test set
+
+    args    dataset - dataset to be split
+            min_nrof_images_per_class - minimum num of images required for a class to be used
+            nrof_train_images_per_class - num of images used for training within a class
+
+    returns train_set - dataset for training
+            test_set - dataset for testing
+    """
+
     train_set = []
     test_set = []
     for cls in dataset:
@@ -26,15 +27,16 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
 
     return train_set, test_set
 
-"""
-labels_to_int - function to convert labels to ints because svm will not accept strings as labels
-
-args    labels - array of labels to be converted
-
-returns int_labels - array of labels in int form 
-        int_label_dict - dictionary for easy lookup of name to int
-"""
 def labels_to_int(labels):
+    """
+    labels_to_int - function to convert labels to ints because svm will not accept strings as labels
+
+    args    labels - array of labels to be converted
+
+    returns int_labels - array of labels in int form
+            int_label_dict - dictionary for easy lookup of name to int
+    """
+
     current_name = ""
     current_int = 0
     int_labels = []
@@ -54,17 +56,18 @@ def labels_to_int(labels):
     #returns the label array in ints and a dictionary to easily look up what number belongs to what person
     return int_labels, int_label_dict
 
-"""
-int_label_lookup -  function to convert test labels to ints.
-                    when given a test set, the data is randomised for fairness
-                    but we need to make sure to match the correct labels to the correct ints.
-
-args    test_labels - labels for use in test
-        int_label_dict - dictionary for easy label int lookup
-
-return  int_labels - test labels converted to ints
-"""
 def int_label_lookup(test_labels, int_label_dict):
+    """
+    int_label_lookup -  function to convert test labels to ints.
+                        when given a test set, the data is randomised for fairness
+                        but we need to make sure to match the correct labels to the correct ints.
+
+    args    test_labels - labels for use in test
+            int_label_dict - dictionary for easy label int lookup
+
+    return  int_labels - test labels converted to ints
+    """
+
     int_labels = []
     for name in test_labels:
         int_labels.append(int_label_dict[name])  

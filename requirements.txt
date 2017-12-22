@@ -1,4 +1,5 @@
 tensorflow==1.2
+keras
 scipy
 scikit-learn
 opencv-python
