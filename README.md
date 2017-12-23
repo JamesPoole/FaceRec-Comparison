@@ -17,8 +17,9 @@ This is still a work in progress.
 ## Implemented Features
 1) Dataset Parsing
 2) Obtaining HOG Feature Vectors
-3) SVM
+3) SVM Classifier
 4) Obtaining FaceNet Embeddings
+5) K Nearest Neighbours Classifier
 
 ## Features still to be Implemented
 1) Neural Classifier
@@ -50,7 +51,7 @@ Download a vesion of a pre trained FaceNet model. The one I used for my testing 
 Run the project by executing `python3 project.py` with the following arguments:
 
 - `--embedding`     Select a valid embedding implementation. (Valid options are "facenet" and "hog")
-- `--classifier`    Select a valid classifier implementation. (Currently only working argument is "svm")
+- `--classifier`    Select a valid classifier implementation. (Valid options are "svm" or "knn")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
 - `--min_nrof_images_per_class` Provide minimum number of images required for a class to be included
 - `--num_test_images_per_class` Provide the number of test images required per class
@@ -59,7 +60,7 @@ Run the project by executing `python3 project.py` with the following arguments:
 
 ### Example
 
-`python project.py --embedding facenet --classifier svm --dataset /home/james/Dropbox/ml/datasets/lfw/ --min_rof_images_per_class 10 --num_test_images_per_class 3 --mdlpath /home/james/Dropbox/ml/models/20170514-110547/20170512-110547.pb`
+`python project.py --embedding facenet --classifier svm --dataset /<dir_to_dataset>/datasets/lfw/ --min_rof_images_per_class 10 --num_test_images_per_class 3 --mdlpath /<dir_to_model>/models/20170514-110547/20170512-110547.pb`
 
 ## Results To Date
 

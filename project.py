@@ -32,10 +32,24 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
     return data, labels
 
 def classify(classify_type, train_data, train_labels, test_data, test_labels):
+    """
+    classify - function to use facial embeddings to judge what label a face is associated with
+
+    args    classify_type - type of classification to use ("svm" or "knn")
+            train_data - data to use for training
+            train_labels - labels to use for training
+            test_data - data to use for testing
+            test_labels - labels to check against predicted values
+
+    returns accuracy - accuracy of the produced model
+    """
+
     if classify_type == "svm":
         classify_method = classifier.SVM_Classifier(train_data, train_labels, test_data, test_labels)
     elif classify_type == "neural":
         classify_method = classifier.Neural_Classifier(train_data, train_labels, test_data, test_labels)
+    elif classify_type == "knn":
+        classify_method = classifier.KNNClassifier(train_data, train_labels, test_data, test_labels)
     else:
         print("You have provided and invalid classifier type. (Valid options are svm or neural)")
         return False

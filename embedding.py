@@ -118,14 +118,6 @@ class HOG_Embedding(Embedding):
                 data.append(descriptor)
                 labels.append(cls.name)
 
-                flipped_img = cv2.flip(gray_img, 0)
-
-                descriptor_2 = hog.compute(flipped_img)
-
-                #add data and label to respective arrays
-                data.append(descriptor_2)
-                labels.append(cls.name)
-
         #convert list to numpy array for compatibility with the svm
         data = np.asarray(data)
         labels = np.asarray(labels)
