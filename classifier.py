@@ -70,6 +70,20 @@ class Classifier(object):
         print(reshaped_data.shape)
         return reshaped_data
 
+    def data_scale(self, data, skip_scale):
+        """
+        data_scale - normalise data points to a scale of 0-1
+
+        arg     data - dataset to normalise
+
+        return scaled_data - scaled version of dataset dataset
+        """
+        if skip_scale == False:
+            scaled_data = data / data.max(axis=0)
+            return scaled_data
+        elif skip_scale == True:
+            return data
+
 class SVM_Classifier(Classifier):
 
     def __init__(self, train_data, train_labels, test_data, test_labels):
@@ -90,9 +104,12 @@ class SVM_Classifier(Classifier):
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)
 
+        #scale train data for improved performance
+        scaled_train_data = self.data_scale(reshaped_train_data, skip_scale=True)
+
         #train svm
         print("Starting to train svm...")
-        svm.fit(reshaped_train_data, self.train_labels)
+        svm.fit(scaled_train_data, self.train_labels)
         print("SVM training finished...")
 
         return svm
@@ -108,8 +125,12 @@ class SVM_Classifier(Classifier):
         """
         #reshape test data for compatibility with svm
         reshaped_test_data = self.data_reshape(self.test_data)
+
+        #scaled test data
+        scaled_test_data = self.data_scale(reshaped_test_data, skip_scale=True)
+
         print("Starting to test svm...")
-        test_response = svm.predict(reshaped_test_data)
+        test_response = svm.predict(scaled_test_data)
 
         return test_response
 

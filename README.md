@@ -60,7 +60,7 @@ Run the project by executing `python3 project.py` with the following arguments:
 
 ### Example
 
-`python project.py --embedding facenet --classifier svm --dataset /<dir_to_dataset>/datasets/lfw/ --min_rof_images_per_class 10 --num_test_images_per_class 3 --mdlpath /<dir_to_model>/models/20170514-110547/20170512-110547.pb`
+`python project.py --embedding facenet --classifier svm --dataset /<dir_to_dataset>/datasets/lfw/ --min_nrof_images_per_class 10 --num_test_images_per_class 3 --mdlpath /<dir_to_model>/models/20170514-110547/20170512-110547.pb`
 
 ## Results To Date
 

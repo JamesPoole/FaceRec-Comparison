@@ -125,6 +125,3 @@ class HOG_Embedding(Embedding):
         #return the array of hogs and labels
         return data, labels
 
-
-
-
