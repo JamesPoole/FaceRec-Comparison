@@ -20,6 +20,7 @@ This is still a work in progress.
 3) SVM Classifier
 4) Obtaining FaceNet Embeddings
 5) K Nearest Neighbours Classifier
+6) Save trained SVM
 
 ## Features still to be Implemented
 1) Neural Classifier
@@ -57,6 +58,11 @@ Run the project by executing `python3 project.py` with the following arguments:
 - `--num_test_images_per_class` Provide the number of test images required per class
 - `--mdlpath`       Provide full path to the tensorflow facenet model (.pb file)
 - `--gpu_memory_fraction`   Upper bound on the amount of GPU memory that will be used by the process
+- `--use_trained_svm`   Path to a pre-trained, saved svm (.pkl file)
+
+Note:
+If the "--use_trained_svm" argument is not used, the program will automatically save the new svm to the
+current directory as a .pkl file. This .pkl file is what can be used again with the "--use_trained_svm" tag
 
 ### Example
 

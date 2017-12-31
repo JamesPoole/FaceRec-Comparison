@@ -1,5 +1,7 @@
 from sklearn import svm as sk_svm
 from sklearn.neighbors import KNeighborsClassifier as sk_knn
+from sklearn.externals import joblib
+
 import numpy as np
 
 import tensorflow as tf
@@ -111,6 +113,8 @@ class SVM_Classifier(Classifier):
         print("Starting to train svm...")
         svm.fit(scaled_train_data, self.train_labels)
         print("SVM training finished...")
+
+        joblib.dump(svm, "latest_svm.pkl")
 
         return svm
 

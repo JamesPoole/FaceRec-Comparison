@@ -1,6 +1,8 @@
 import sys
 import argparse
 
+from sklearn.externals import joblib
+
 import facenet
 
 import embedding
@@ -31,7 +33,7 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
 
     return data, labels
 
-def classify(classify_type, train_data, train_labels, test_data, test_labels):
+def classify(classify_type, trained_svm, train_data, train_labels, test_data, test_labels):
     """
     classify - function to use facial embeddings to judge what label a face is associated with
 
@@ -54,7 +56,13 @@ def classify(classify_type, train_data, train_labels, test_data, test_labels):
         print("You have provided and invalid classifier type. (Valid options are svm or neural)")
         return False
 
-    model = classify_method.train()
+    #if we are provided with a pre trained svm, there is no need to carry out training
+    if trained_svm == "":
+        model = classify_method.train()
+    else:
+        print("Using pre trained svm...")
+        model = joblib.load(trained_svm)
+
     response = classify_method.test(model)
     accuracy = classify_method.check_accuracy(model, response)
 
@@ -75,7 +83,11 @@ def main(args):
     int_test_labels = data_parse.int_label_lookup(test_labels, int_label_lookup_dict)
     print("Test data parsed.")
 
-    result = classify(args.classifier, train_data, int_train_labels, test_data, int_test_labels)
+    #Run Classification
+    if args.use_trained_svm == None:
+        args.use_trained_svm = ""
+
+    result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels)
 
     print(result)
 
@@ -89,6 +101,7 @@ def parse_arguments(argv):
     parser.add_argument("--mdlpath", help="Full path to tensorflow model to use", type=str, required=False)
     parser.add_argument("--imgsize", help="Size of images to use", type=int, default=160, required=False)
     parser.add_argument("--gpu_memory_fraction", help="tensorflow gpu memory usage", type=float, required=False)
+    parser.add_argument("--use_trained_svm", help="path to pre trained svm", type=str, required=False)
     args = parser.parse_args()   
     return parser.parse_args(argv)
 
