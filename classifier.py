@@ -1,6 +1,10 @@
 from sklearn import svm as sk_svm
 from sklearn.neighbors import KNeighborsClassifier as sk_knn
+from sklearn.model_selection import GridSearchCV
+from sklearn.externals import joblib
+
 import numpy as np
+from pandas import DataFrame as df
 
 import tensorflow as tf
 import keras
@@ -98,8 +102,15 @@ class SVM_Classifier(Classifier):
 
         returns svm - svm to test and run
         """
+
+        param_grid = [
+            {'C': [10], 'kernel': ['linear']},
+            {'C': [.1, 10, 100], 'gamma': [0.001, 0.0001, 0.00001], 'kernel': ['rbf']}
+        ]
+
         #set up svm
-        svm = sk_svm.SVC(kernel='linear', probability=True)
+        svm = sk_svm.SVC()
+        classifier = GridSearchCV(svm, param_grid, n_jobs=2)
 
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)
@@ -109,8 +120,11 @@ class SVM_Classifier(Classifier):
 
         #train svm
         print("Starting to train svm...")
-        svm.fit(scaled_train_data, self.train_labels)
+        classifier.fit(scaled_train_data, self.train_labels)
         print("SVM training finished...")
+
+        to_display = df(data=classifier.cv_results_)
+        print(to_display)
 
         return svm
 
