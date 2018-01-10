@@ -101,7 +101,7 @@ class SVM_Classifier(Classifier):
         returns svm - svm to test and run
         """
         #set up svm
-        svm = sk_svm.SVC(kernel='linear', probability=True)
+        svm = sk_svm.SVC(kernel='rbf', C=100, gamma=.00001, probability=True)
 
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)

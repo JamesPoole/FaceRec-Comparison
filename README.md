@@ -80,4 +80,4 @@ current directory as a .pkl file. This .pkl file is what can be used again with 
 |-----------|---------|-------------|-------|
 | Facenet    | 99.6%-30secs | - | - |
 | HOG        | 66.1%-25hours | - | 22.2%-20mins |
-| DLib       | - | - | - |
+| DLib       | 100%-15mins | - | - |
