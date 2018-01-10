@@ -10,4 +10,4 @@ requests
 psutil
 image
 numpy
-
+face-recognition

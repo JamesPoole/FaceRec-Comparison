@@ -32,9 +32,6 @@ This requires Python 3.X
 
 A working Tensorflow environment is required. Install instructions can be found [here](https://www.tensorflow.org/install/install_linux).
 
-Python requirements can be found and installed from requirements.txt
-`pip3 install -r requirements.txt`
-
 Tested using the [LFW Dataset](http://vis-www.cs.umass.edu/lfw/). You can download this [here](http://vis-www.cs.umass.edu/lfw/lfw.tgz).
 
 You will require the FaceNet code for the FaceNet embedding part of this project.
@@ -46,6 +43,13 @@ Following that you will need to add it to your python path.
 You can add this line to the bottom of your ~/.bashrc file to ensure that it is run every time you open a terminal.
 
 Download a vesion of a pre trained FaceNet model. The one I used for my testing can be found [here](https://drive.google.com/file/d/0B5MzpY9kBtDVZ2RpVDYwWmxoSUk)
+
+Some packages need to be installed from the Ubuntu repos. I have made a script to cover this; just run the following commands:
+`chmod +x requirements.sh`
+`sudo ./requirements.sh`
+
+Python requirements can be found and installed from requirements.txt
+`pip3 install -r requirements.txt`
 
 ### Parameters
 
