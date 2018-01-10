@@ -1,9 +1,8 @@
 import cv2
-
 import tensorflow as tf
 import numpy as np
-
 import facenet
+import face_recognition
 
 class Embedding(object):
     
@@ -114,7 +113,7 @@ class HOG_Embedding(Embedding):
                 #calculate the hog for the image
                 descriptor = hog.compute(gray_img)
 
-                #add data and label to respective arrays
+                #add data and label to respective lists
                 data.append(descriptor)
                 labels.append(cls.name)
 
@@ -123,5 +122,48 @@ class HOG_Embedding(Embedding):
         labels = np.asarray(labels)
 
         #return the array of hogs and labels
+        return data, labels
+
+class DLIBEmbedding(Embedding):
+    """
+    An implementation using Adam Geitgey's face_recognition library
+    This is an API that makes use of DLIB
+
+    args - dataset
+    """
+    def __init__(self, dataset):
+        super().__init__(dataset)
+
+    def get_embeddings(self):
+        """
+        get_embeddings - function to get embeddings using the face_recognition lib
+
+        args    self
+
+        returns data - array of embeddings for each image
+                labels - array of corresponding labels for each embedding
+        """
+
+        data = []
+        labels = []
+        for cls in self.dataset:
+            for image in cls.image_paths:
+                #load image into an array
+                img = face_recognition.load_image_file(image)
+
+                #calculate face encodings for each face
+                #(Grab index 0 because we know there is only one face per image)
+                encoding = face_recognition.face_encodings(img)
+
+                #add data and label to respective lists
+                for i in encoding:
+                    data.append(i)
+                    labels.append(cls.name)
+
+        #convert to numpy array for compatibility with the svm
+        data = np.asarray(data)
+        labels = np.asarray(labels)
+
+        #return the arrays of encodings and labels
         return data, labels
 

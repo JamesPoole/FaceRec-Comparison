@@ -21,10 +21,10 @@ This is still a work in progress.
 4) Obtaining FaceNet Embeddings
 5) K Nearest Neighbours Classifier
 6) Save trained SVM
+7) [Adam Geitgey's Face Recognition Encoding](https://github.com/ageitgey/face_recognition)
 
 ## Features still to be Implemented
 1) Neural Classifier
-2) Dataset Facial Alignment
 3) Improved Performance Measuring
 
 ## Prerequisites
@@ -55,7 +55,7 @@ Python requirements can be found and installed from requirements.txt
 
 Run the project by executing `python3 project.py` with the following arguments:
 
-- `--embedding`     Select a valid embedding implementation. (Valid options are "facenet" and "hog")
+- `--embedding`     Select a valid embedding implementation. (Valid options are "facenet", "hog" and "dlib"[for adam geitgeys encodings])
 - `--classifier`    Select a valid classifier implementation. (Valid options are "svm" or "knn")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
 - `--min_nrof_images_per_class` Provide minimum number of images required for a class to be included

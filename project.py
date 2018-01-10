@@ -25,6 +25,8 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
         embed_method = embedding.HOG_Embedding(dataset)
     elif embed_type == "facenet":
         embed_method = embedding.FN_Embedding(dataset, modelpath, imgsize, gpu_mem)
+    elif embed_type == "dlib":
+        embed_method = embedding.DLIBEmbedding(dataset)
     else:
         print("You have provided an invalid embedding type. (Valid options are facenet or hog)")
         return False
