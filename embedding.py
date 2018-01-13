@@ -3,6 +3,9 @@ import tensorflow as tf
 import numpy as np
 import facenet
 import face_recognition
+from skimage import exposure
+from skimage import feature
+
 
 class Embedding(object):
     
@@ -70,7 +73,7 @@ class FN_Embedding(Embedding):
 
                 return data, labels
 
-class HOG_Embedding(Embedding):
+class HOG_OCV_Embedding(Embedding):
 
     def __init__(self, dataset):
         super().__init__(dataset)
@@ -123,6 +126,47 @@ class HOG_Embedding(Embedding):
 
         #return the array of hogs and labels
         return data, labels
+
+class HOG_SKI_Embedding(Embedding):
+
+    def __init__(self, dataset):
+        super().__init__(dataset)
+
+    def get_embeddings(self):
+        """
+        get_embeddings - function to get embeddings (in form of HOG) of a dataset using Scikit
+
+        args    self
+
+        returns data - array of embeddings for each image
+                labels - array of corresponding labels for each embedding
+        """
+
+        data = []
+        labels = []
+        for cls in self.dataset:
+            for image in cls.image_paths:
+                img = cv2.imread(image)
+
+                #convert image to greyscale
+                gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+                #calculate the hog for the image
+                descriptor = feature.hog(gray_img, orientations=9, pixels_per_cell=(8,8),
+                        cells_per_block=(2,2), transform_sqrt=True)
+
+                #add data and label to respective lists
+                data.append(descriptor)
+                labels.append(cls.name)
+
+        #convert list to numpy array for compatibility with the svm
+        data = np.asarray(data)
+        labels = np.asarray(labels)
+
+        #return the array of hogs and labels
+        return data, labels
+
+
 
 class DLIBEmbedding(Embedding):
     """

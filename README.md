@@ -55,7 +55,7 @@ Python requirements can be found and installed from requirements.txt
 
 Run the project by executing `python3 project.py` with the following arguments:
 
-- `--embedding`     Select a valid embedding implementation. (Valid options are "facenet", "hog" and "dlib"[for adam geitgeys encodings])
+- `--embedding`     Select a valid embedding implementation. (Valid options are "facenet", "hog_opencv", "hog_scikit" and "dlib"[for adam geitgeys encodings])
 - `--classifier`    Select a valid classifier implementation. (Valid options are "svm" or "knn")
 - `--dataset`       Provide full path to the dataset. (Only tested with lfw)
 - `--min_nrof_images_per_class` Provide minimum number of images required for a class to be included
@@ -79,5 +79,5 @@ current directory as a .pkl file. This .pkl file is what can be used again with 
 |           | SVM     | Neural Net  | KNN   |
 |-----------|---------|-------------|-------|
 | Facenet    | 99.6%-30secs | - | - |
-| HOG        | 66.1%-25hours | - | 22.2%-20mins |
+| OpenCV HOG        | 66.1%-25hours | - | 22.2%-20mins |
 | DLib       | 100%-15mins | - | - |

@@ -21,8 +21,10 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
     returns data - array of facial vectors
             labels - array of labels that corresponds to the array of facial vectors
     """
-    if embed_type == "hog":
-        embed_method = embedding.HOG_Embedding(dataset)
+    if embed_type == "hog_opencv":
+        embed_method = embedding.HOG_OCV_Embedding(dataset)
+    elif embed_type == "hog_scikit":
+        embed_method = embedding.HOG_SKI_Embedding(dataset)
     elif embed_type == "facenet":
         embed_method = embedding.FN_Embedding(dataset, modelpath, imgsize, gpu_mem)
     elif embed_type == "dlib":
