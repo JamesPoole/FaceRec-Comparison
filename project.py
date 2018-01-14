@@ -1,4 +1,5 @@
 import sys
+import time
 import argparse
 
 from sklearn.externals import joblib
@@ -77,6 +78,7 @@ def main(args):
     train_set, test_set = data_parse.split_dataset(dataset_tmp, args.min_nrof_images_per_class, args.num_test_images_per_class)
     print("Parsing dataset...")
 
+    start_time = time.time()
     #Prepare Training Data
     train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
     int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
@@ -94,6 +96,7 @@ def main(args):
     result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels)
 
     print(result)
+    print("Run Time: %s minutes" % ((time.time() - start_time)/60))
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()

@@ -152,7 +152,7 @@ class HOG_SKI_Embedding(Embedding):
                 gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
                 #calculate the hog for the image
-                descriptor = feature.hog(gray_img, orientations=9, pixels_per_cell=(8,8),
+                descriptor = feature.hog(gray_img, orientations=9, pixels_per_cell=(5,5),
                         cells_per_block=(2,2), transform_sqrt=True)
 
                 #add data and label to respective lists
