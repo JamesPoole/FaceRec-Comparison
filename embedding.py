@@ -60,7 +60,8 @@ class FN_Embedding(Embedding):
                     print("batch num: %d of %d" % (i / self.batchsize, len(image_paths) / self.batchsize))
 
                     #load data
-                    images = facenet.load_data(image_paths=image_paths[i:i+self.batchsize], do_random_crop=False, do_random_flip=False, image_size=self.imgsize, do_prewhiten=True)
+                    images = facenet.load_data(image_paths=image_paths[i:i+self.batchsize],
+                            do_random_crop=False, do_random_flip=False, image_size=self.imgsize, do_prewhiten=True)
                     feed_dict = {images_placeholder: images, phase_train_placeholder: False}
 
                     emb_array = sess.run(embeddings, feed_dict=feed_dict)
@@ -111,10 +112,10 @@ class HOG_OCV_Embedding(Embedding):
                 img = cv2.imread(image)
 
                 #convert image to greyscale
-                gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                #gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
                 #calculate the hog for the image
-                descriptor = hog.compute(gray_img)
+                descriptor = hog.compute(img)
 
                 #add data and label to respective lists
                 data.append(descriptor)

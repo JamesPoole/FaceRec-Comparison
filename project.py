@@ -38,7 +38,7 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
 
     return data, labels
 
-def classify(classify_type, trained_svm, train_data, train_labels, test_data, test_labels):
+def classify(classify_type, trained_svm, train_data, train_labels, test_data, test_labels, num_classes):
     """
     classify - function to use facial embeddings to judge what label a face is associated with
 
@@ -54,7 +54,7 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
     if classify_type == "svm":
         classify_method = classifier.SVM_Classifier(train_data, train_labels, test_data, test_labels)
     elif classify_type == "neural":
-        classify_method = classifier.Neural_Classifier(train_data, train_labels, test_data, test_labels)
+        classify_method = classifier.Neural_Classifier(train_data, train_labels, test_data, test_labels, num_classes)
     elif classify_type == "knn":
         classify_method = classifier.KNNClassifier(train_data, train_labels, test_data, test_labels)
     else:
@@ -75,7 +75,7 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
 
 def main(args):
     dataset_tmp = facenet.get_dataset(args.dataset)
-    train_set, test_set = data_parse.split_dataset(dataset_tmp, args.min_nrof_images_per_class, args.num_test_images_per_class)
+    train_set, test_set, num_classes = data_parse.split_dataset(dataset_tmp, args.min_nrof_images_per_class, args.num_test_images_per_class)
     print("Parsing dataset...")
 
     start_time = time.time()
@@ -93,7 +93,7 @@ def main(args):
     if args.use_trained_svm == None:
         args.use_trained_svm = ""
 
-    result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels)
+    result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels, num_classes)
 
     print(result)
     print("Run Time: %s minutes" % ((time.time() - start_time)/60))

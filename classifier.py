@@ -13,11 +13,12 @@ from keras import backend as K
 
 class Classifier(object):
 
-    def __init__(self, train_data, train_labels, test_data, test_labels):
+    def __init__(self, train_data, train_labels, test_data, test_labels, num_classes):
         self.train_data = train_data
         self.train_labels = train_labels
         self.test_data = test_data
         self.test_labels = test_labels
+        self.num_classes = num_classes
 
     def train(self):
         pass
@@ -186,17 +187,34 @@ class KNNClassifier(Classifier):
 
 class Neural_Classifier(Classifier):
     
-    def __init__(self, train_data, train_labels, test_data, test_labels):
-        super().__init__(train_data, train_labels, test_data, test_labels)
+    def __init__(self, train_data, train_labels, test_data, test_labels, num_classes):
+        super().__init__(train_data, train_labels, test_data, test_labels, num_classes)
+
+    def data_reshape(self, data):
+        """
+        data_reshape - function to reshape the data to work with keras
+
+        args    data - dataset to reshape
+
+        return reshaped data - reshaped dataset
+        """
+        data_size = len(data)
+        reshaped_data = data.reshape(data_size, -1)
+        print("DATA SHAPE")
+        print(reshaped_data.shape)
+        return reshaped_data
+
 
     def train(self):
          epochs = 25
          batch_size = 25
+         self.train_data = self.data_reshape(self.train_data)
          input_shape = self.train_data.shape
          print(input_shape)
 
          model = Sequential()
-         model.add(Dense(units=20, input_dim=128, activation='sigmoid'))
+         model.add(Dense(32, input_shape=(128,), activation='sigmoid'))
+         model.add(Dense(self.num_classes, activation="softmax"))
 
          model.compile(loss='categorical_crossentropy',
                     optimizer='sgd',

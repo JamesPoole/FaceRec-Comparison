@@ -11,6 +11,7 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
 
     returns train_set - dataset for training
             test_set - dataset for testing
+            num_classes - number of classes
     """
 
     train_set = []
@@ -23,9 +24,10 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
             test_set.append(facenet.ImageClass(cls.name, paths[:nrof_test_images_per_class]))
             train_set.append(facenet.ImageClass(cls.name, paths[nrof_test_images_per_class:]))
 
-    print('Classes: %d' % (len(test_set)))
+    num_classes = len(test_set)
+    print('Classes: %d' % (num_classes))
 
-    return train_set, test_set
+    return train_set, test_set, num_classes
 
 def labels_to_int(labels):
     """
