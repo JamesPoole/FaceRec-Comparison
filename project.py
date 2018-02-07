@@ -74,34 +74,37 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
     return accuracy
 
 def main(args):
+    print("Parsing dataset...")
     dataset_tmp = facenet.get_dataset(args.dataset)
     train_set, test_set, num_classes = data_parse.split_dataset(dataset_tmp, args.min_nrof_images_per_class, args.num_test_images_per_class)
-    print("Parsing dataset...")
+    print("Dataset parsed.")
 
-    start_time = time.time()
+    start_time_embeddings = time.time()
     #Prepare Training Data
+    print("Calculating training facial embeddings...")
     train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
     int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
-    print("Training data parsed.")
 
     #Prepare Test Data
+    print("Calculating testing facial embeddings...")
     test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
     int_test_labels = data_parse.int_label_lookup(test_labels, int_label_lookup_dict)
-    print("Test data parsed.")
+    print("Embedding data fetched and now going to be classified.")
+    print("Embedding time: %s minutes" % ((time.time() - start_time_embeddings)/60))
 
     #Run Classification
     if args.use_trained_svm == None:
         args.use_trained_svm = ""
 
+    start_time_classify = time.time()
     result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels, num_classes)
 
-    print(result)
-    print("Run Time: %s minutes" % ((time.time() - start_time)/60))
+    print("Classify Time: %s minutes" % ((time.time() - start_time_classify)/60))
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument("--embedding", help="Select method of getting facial embeddings (facenet or hog)", type=str, required=True)
-    parser.add_argument("--classifier", help="Select method of classifying images (neural or svm)", type=str, required=True)
+    parser.add_argument("--embedding", help="Select method of getting facial embeddings (facenet, hog_opencv, hog_sklearn or dlib)", type=str, required=True)
+    parser.add_argument("--classifier", help="Select method of classifying images (svm or knn)", type=str, required=True)
     parser.add_argument("--dataset", help="Full path to dataset dir", type=str, required=True)
     parser.add_argument("--min_nrof_images_per_class", help="minimum images needed for a class to be included", type=int, required=True)
     parser.add_argument("--num_test_images_per_class", help="number of test images per class", type=int, required=True)
@@ -111,7 +114,6 @@ def parse_arguments(argv):
     parser.add_argument("--use_trained_svm", help="path to pre trained svm", type=str, required=False)
     args = parser.parse_args()   
     return parser.parse_args(argv)
-
 
 if __name__ == '__main__':
     main(parse_arguments(sys.argv[1:]))

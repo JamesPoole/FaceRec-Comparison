@@ -17,6 +17,7 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
     train_set = []
     test_set = []
     for cls in dataset:
+        print(cls)
         paths = cls.image_paths
         # Remove classes with less than min_nrof_images_per_class
         if len(paths)>=min_nrof_images_per_class:
@@ -25,7 +26,7 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
             train_set.append(facenet.ImageClass(cls.name, paths[nrof_test_images_per_class:]))
 
     num_classes = len(test_set)
-    print('Classes: %d' % (num_classes))
+    print('Classes (Number of Faces): %d' % num_classes)
 
     return train_set, test_set, num_classes
 

@@ -1,11 +1,11 @@
 from sklearn import svm as sk_svm
 from sklearn.neighbors import KNeighborsClassifier as sk_knn
 from sklearn.externals import joblib
+from sklearn import preprocessing
 
 import numpy as np
 
 import tensorflow as tf
-import keras
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
@@ -43,7 +43,6 @@ class Classifier(object):
         best_class_indices = np.argmax(predictions, axis=1)
         best_class_probabilities = predictions[np.arange(len(best_class_indices)), best_class_indices]
 
-        print(self.test_labels)
         class_names = []
         prev_class = 1
         for cls in self.test_labels:
@@ -82,7 +81,9 @@ class Classifier(object):
         return scaled_data - scaled version of dataset dataset
         """
         if skip_scale == False:
-            scaled_data = data / data.max(axis=0)
+            print(data[0])
+            scaled_data = preprocessing.normalize(data, norm='l1')
+            print(scaled_data[0])
             return scaled_data
         elif skip_scale == True:
             return data
@@ -102,13 +103,13 @@ class SVM_Classifier(Classifier):
         returns svm - svm to test and run
         """
         #set up svm
-        svm = sk_svm.SVC(kernel='rbf', C=100, gamma=.00001, probability=True)
+        svm = sk_svm.SVC(kernel='linear', C=10, probability=True)
 
         #reshape train data for compatibility with svm
         reshaped_train_data = self.data_reshape(self.train_data)
 
         #scale train data for improved performance
-        scaled_train_data = self.data_scale(reshaped_train_data, skip_scale=True)
+        scaled_train_data = self.data_scale(reshaped_train_data, skip_scale=False)
 
         #train svm
         print("Starting to train svm...")
@@ -132,7 +133,7 @@ class SVM_Classifier(Classifier):
         reshaped_test_data = self.data_reshape(self.test_data)
 
         #scaled test data
-        scaled_test_data = self.data_scale(reshaped_test_data, skip_scale=True)
+        scaled_test_data = self.data_scale(reshaped_test_data, skip_scale=False)
 
         print("Starting to test svm...")
         test_response = svm.predict(scaled_test_data)
