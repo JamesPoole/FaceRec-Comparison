@@ -13,20 +13,16 @@ from keras import backend as K
 
 class Classifier(object):
 
-    def __init__(self, train_data, train_labels, test_data, test_labels, num_classes):
+    def __init__(self, train_data, train_labels, test_data, test_labels):
         self.train_data = train_data
         self.train_labels = train_labels
         self.test_data = test_data
         self.test_labels = test_labels
-        self.num_classes = num_classes
 
     def train(self):
         pass
 
-    def test(self):
-        pass
-
-    def check_accuracy(self, model, test_response):
+    def check_accuracy(self, model):
         """
         check_accuracy - function to check the accuracy of the test responses
 
@@ -81,9 +77,7 @@ class Classifier(object):
         return scaled_data - scaled version of dataset dataset
         """
         if skip_scale == False:
-            print(data[0])
             scaled_data = preprocessing.normalize(data, norm='l1')
-            print(scaled_data[0])
             return scaled_data
         elif skip_scale == True:
             return data
@@ -120,26 +114,6 @@ class SVM_Classifier(Classifier):
 
         return svm
 
-    def test(self, svm):
-        """
-        test - function to test the trained svm
-
-        args    self.test_data - test data set
-                svm - trained svm
-
-        returns test_response
-        """
-        #reshape test data for compatibility with svm
-        reshaped_test_data = self.data_reshape(self.test_data)
-
-        #scaled test data
-        scaled_test_data = self.data_scale(reshaped_test_data, skip_scale=False)
-
-        print("Starting to test svm...")
-        test_response = svm.predict(scaled_test_data)
-
-        return test_response
-
 class KNNClassifier(Classifier):
     """
     An implementation of K Nearest Neighbours classifier from scikit learn.
@@ -170,26 +144,11 @@ class KNNClassifier(Classifier):
 
         return model
 
-    def test(self, model):
-        """
-        test - function to test the trained model
-
-        args    self.test_data - test data set
-                model - trained model
-
-        returns test_response
-        """
-        #reshape test data for compatibility with svm
-        reshaped_test_data = self.data_reshape(self.test_data)
-        print("Starting to test model...")
-        test_response = model.predict(reshaped_test_data)
-
-        return test_response
-
 class Neural_Classifier(Classifier):
     
     def __init__(self, train_data, train_labels, test_data, test_labels, num_classes):
-        super().__init__(train_data, train_labels, test_data, test_labels, num_classes)
+        super().__init__(train_data, train_labels, test_data, test_labels)
+        self.num_classes = num_classes
 
     def data_reshape(self, data):
         """
@@ -224,9 +183,6 @@ class Neural_Classifier(Classifier):
          model.fit(self.train_data, self.train_labels, epochs=epochs, batch_size=batch_size)
 
          return model
-
-    def test(self):
-        return 0
 
     def check_accuracy(self, model):
         loss_and_metrics = model.evaluate(self.test_data, self.test_labels, batch_size = batch_size)

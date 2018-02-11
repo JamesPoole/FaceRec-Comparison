@@ -68,8 +68,7 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
         print("Using pre trained svm...")
         model = joblib.load(trained_svm)
 
-    response = classify_method.test(model)
-    accuracy = classify_method.check_accuracy(model, response)
+    accuracy = classify_method.check_accuracy(model)
 
     return accuracy
 

@@ -110,6 +110,7 @@ class HOG_OCV_Embedding(Embedding):
         for cls in self.dataset:
             for image in cls.image_paths:
                 img = cv2.imread(image)
+                img = cv2.resize(img, (250, 250))
 
                 #convert image to greyscale
                 #gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

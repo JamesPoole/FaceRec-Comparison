@@ -17,7 +17,6 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_test_images_per_class
     train_set = []
     test_set = []
     for cls in dataset:
-        print(cls)
         paths = cls.image_paths
         # Remove classes with less than min_nrof_images_per_class
         if len(paths)>=min_nrof_images_per_class:
