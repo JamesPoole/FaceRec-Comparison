@@ -78,6 +78,6 @@ current directory as a .pkl file. This .pkl file is what can be used again with 
 
 |           | SVM     | Neural Net  | KNN   |
 |-----------|---------|-------------|-------|
-| Facenet    | 99.6%-30secs | - | - |
-| OpenCV HOG        | 66.1%-25hours | - | 22.2%-20mins |
+| Facenet    | 68.8%-22secs | - | 99.9%-.025mins |
+| OpenCV HOG | 66.1%-25hours | - | 22.2%-20mins |
 | DLib       | 100%-15mins | - | - |
