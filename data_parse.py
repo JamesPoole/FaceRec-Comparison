@@ -37,17 +37,20 @@ def labels_to_int(labels):
 
     returns int_labels - array of labels in int form
             int_label_dict - dictionary for easy lookup of name to int
+            int_label_dict_reverse - dictionary for easy lookup of int to name
     """
 
     current_name = ""
     current_int = 0
     int_labels = []
-    int_label_dict ={}
+    int_label_dict = {}
+    int_label_dict_reverse = {}
     for name in labels:
         if name != current_name:
             current_name = name
             int_labels.append(current_int)
             int_label_dict.update({current_name: current_int})
+            int_label_dict_reverse.update({current_int: current_name})
             current_int += 1
         else:
             int_labels.append(current_int)
@@ -56,7 +59,7 @@ def labels_to_int(labels):
     int_labels = np.asarray(int_labels)
 
     #returns the label array in ints and a dictionary to easily look up what number belongs to what person
-    return int_labels, int_label_dict
+    return int_labels, int_label_dict, int_label_dict_reverse
 
 def int_label_lookup(test_labels, int_label_dict):
     """

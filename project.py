@@ -38,7 +38,7 @@ def get_face_vectors(embed_type, dataset, modelpath, imgsize, gpu_mem):
 
     return data, labels
 
-def classify(classify_type, trained_svm, train_data, train_labels, test_data, test_labels, num_classes):
+def classify(classify_type, trained_svm, train_data, train_labels, test_data, test_labels, num_classes, int_label_lookup_dict):
     """
     classify - function to use facial embeddings to judge what label a face is associated with
 
@@ -47,6 +47,8 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
             train_labels - labels to use for training
             test_data - data to use for testing
             test_labels - labels to check against predicted values
+            num_classes - required for neural classifier
+            int_label_lookup_dict - dict for easy lookup of int to label
 
     returns accuracy - accuracy of the produced model
     """
@@ -68,7 +70,7 @@ def classify(classify_type, trained_svm, train_data, train_labels, test_data, te
         print("Using pre trained svm...")
         model = joblib.load(trained_svm)
 
-    accuracy = classify_method.check_accuracy(model)
+    accuracy = classify_method.check_accuracy(model, int_label_lookup_dict)
 
     return accuracy
 
@@ -82,12 +84,12 @@ def main(args):
     #Prepare Training Data
     print("Calculating training facial embeddings...")
     train_data, train_labels = get_face_vectors(args.embedding, train_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
-    int_train_labels, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
+    int_train_labels, label_int_lookup_dict, int_label_lookup_dict = data_parse.labels_to_int(train_labels)
 
     #Prepare Test Data
     print("Calculating testing facial embeddings...")
     test_data, test_labels = get_face_vectors(args.embedding, test_set, args.mdlpath, args.imgsize, args.gpu_memory_fraction)
-    int_test_labels = data_parse.int_label_lookup(test_labels, int_label_lookup_dict)
+    int_test_labels = data_parse.int_label_lookup(test_labels, label_int_lookup_dict)
     print("Embedding data fetched and now going to be classified.")
     print("Embedding time: %s minutes" % ((time.time() - start_time_embeddings)/60))
 
@@ -96,7 +98,7 @@ def main(args):
         args.use_trained_svm = ""
 
     start_time_classify = time.time()
-    result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels, num_classes)
+    result = classify(args.classifier, args.use_trained_svm, train_data, int_train_labels, test_data, int_test_labels, num_classes, int_label_lookup_dict)
 
     print("Classify Time: %s minutes" % ((time.time() - start_time_classify)/60))
 

@@ -22,12 +22,13 @@ class Classifier(object):
     def train(self):
         pass
 
-    def check_accuracy(self, model):
+    def check_accuracy(self, model, int_label_lookup_dict):
         """
         check_accuracy - function to check the accuracy of the test responses
 
         args    self.test_labels - original array of labels in int form
                 model - trained model
+                int_label_lookup_dict - dict for easy lookup of int to label
                 test_response - array of predicted labels from the svm test
 
         returns accuracy - percentage accuracy
@@ -46,11 +47,20 @@ class Classifier(object):
                 class_names.append(cls)
                 prev_class = cls
 
+        print("===================Prediction Table===================")
+        print("%s  %s: %s \t %s" % ("test_num", "predicted face", "confidence", "expected face"))
+        print("======================================================")
         for i in range(len(best_class_indices)):
-            print('%4d  %s: %.3f' % (i, class_names[best_class_indices[i]], best_class_probabilities[i]))
+            expected_face = int_label_lookup_dict[self.test_labels[i]]
+            predicted_face = int_label_lookup_dict[class_names[best_class_indices[i]]]
+            #ensure nice print formatting
+            if len(predicted_face) > 13:
+                predicted_face = predicted_face[:13]
+            print('%4d  %s: %.3f \t expected: %s' % (i, predicted_face , best_class_probabilities[i], expected_face))
 
         accuracy = np.mean(np.equal(best_class_indices, self.test_labels))
-        print('Accuracy: %.3f' % accuracy)
+        print("======================================================")
+        print('Overall Accuracy: %.3f' % accuracy)
 
         return accuracy
 
@@ -64,8 +74,6 @@ class Classifier(object):
         """
         data_size = len(data)
         reshaped_data = data.reshape(data_size, -1)
-        print("DATA SHAPE")
-        print(reshaped_data.shape)
         return reshaped_data
 
     def data_scale(self, data, skip_scale):
